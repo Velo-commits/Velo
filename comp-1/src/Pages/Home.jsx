@@ -104,7 +104,7 @@ function Home() {
       
       {/* SIDEBAR */}
       <div className="sidebar">
-        <h2>COMP-1</h2>
+        <h2>VELO</h2>
         <div 
           className={`menu-item ${activeTab === 'dashboard' ? 'active' : ''}`}
           onClick={() => setActiveTab('dashboard')}
