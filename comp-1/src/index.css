@@ -39,3 +39,40 @@ th { background-color: #f8f9fa; color: #666; }
 /* COMMON ELEMENTS */
 input { padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
 button.primary { background-color: #007bff; color: white; border: none; padding: 10px 1
+    /* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+  /* Stack the sidebar and main content vertically */
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  /* Make sidebar a top-bar instead of a side-bar */
+  .sidebar {
+    width: 100%;
+    padding: 10px;
+    flex-direction: row; /* Items sit side-by-side */
+    overflow-x: auto;   /* Scroll if there are too many items */
+    box-sizing: border-box;
+  }
+
+  .sidebar h2 {
+    display: none; /* Hide the big logo on mobile to save space */
+  }
+
+  .menu-item {
+    padding: 10px 15px;
+    margin-bottom: 0;
+    white-space: nowrap; /* Keep text on one line */
+  }
+
+  /* Make the content area a single column */
+  .content-area {
+    grid-template-columns: 1fr; /* Stack User Table and Todo List */
+    padding: 15px;
+  }
+
+  /* Force tables to scroll sideways if they are too wide */
+  .widget {
+    overflow-x: auto;
+  }
+}
