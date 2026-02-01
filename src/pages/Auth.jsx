@@ -14,27 +14,37 @@ function Auth() {
   const navigate = useNavigate();
 
   const handleAuth = async (e) => {
-  e.preventDefault();
-  setError('');
-  try {
-    if (isLogin) {
-      await signInWithEmailAndPassword(auth, email, password);
-    } else {
-      await createUserWithEmailAndPassword(auth, email, password);
+    e.preventDefault();
+    setError(''); // Clear previous errors
+    try {
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
+      navigate('/home'); // Success! Go to dashboard
+    } catch (err) {
+      console.error("Auth Error:", err.code);
+      // Simplify error messages for the user
+      if (err.code === 'auth/invalid-credential') {
+        setError("Incorrect email or password.");
+      } else if (err.code === 'auth/email-already-in-use') {
+        setError("This email is already taken. Try logging in.");
+      } else if (err.code === 'auth/weak-password') {
+        setError("Password should be at least 6 characters.");
+      } else {
+        setError(err.message);
+      }
     }
-    navigate('/home'); 
-  } catch (err) {
-    // This will help us see exactly what Firebase is complaining about
-    console.error("Firebase Auth Error Code:", err.code);
-    setError(err.message); 
-  }
-};
+  };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1>{isLogin ? 'Welcome Back' : 'Join the Cloud'}</h1>
-        <p className="subtitle">{isLogin ? 'Login to manage your tasks' : 'Create an account to get started'}</p>
+        <h1>{isLogin ? 'Welcome Back' : 'Get Started'}</h1>
+        <p className="subtitle">
+          {isLogin ? 'Login to manage your tasks' : 'Create an account in seconds'}
+        </p>
         
         {error && <div className="error-banner">{error}</div>}
         
@@ -43,7 +53,7 @@ function Auth() {
             <label>Email Address</label>
             <input 
               type="email" 
-              placeholder="name@company.com" 
+              placeholder="name@example.com" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               required 
@@ -61,16 +71,14 @@ function Auth() {
             />
           </div>
           
-          <button type="submit" className="primary-btn">
+          <button type="submit" className="primary-btn" style={{width: '100%'}}>
             {isLogin ? 'Sign In' : 'Create Account'}
           </button>
         </form>
         
-        <div className="auth-footer">
-          <p onClick={() => setIsLogin(!isLogin)} className="toggle-link">
-            {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Log In"}
-          </p>
-        </div>
+        <p onClick={() => setIsLogin(!isLogin)} className="toggle-link">
+          {isLogin ? "Need an account? Sign Up" : "Have an account? Login"}
+        </p>
       </div>
     </div>
   );
