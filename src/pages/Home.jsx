@@ -50,8 +50,8 @@ function Home() {
             <h3>Cloud Tasks (Synced to Mumbai ☁️)</h3>
             <div className="todo-input-group">
               <input 
-                id="task-input"
-                name="task-input"
+                id="task-name"
+                name="task-name"
                 type="text" 
                 placeholder="New Cloud Task..." 
                 value={newTask}
