@@ -1,127 +1,59 @@
 :root {
-  --primary: #6366f1;
-  --bg: #f3f4f6;
-  --sidebar: #1e293b;
-  --white: #ffffff;
+  --primary: #2563eb;
+  --bg: #f8fafc;
+  --sidebar: #0f172a;
 }
 
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg);
-}
+body { margin: 0; font-family: sans-serif; background: var(--bg); }
 
-.dashboard-wrapper {
-  display: flex;
-  min-height: 100vh;
-}
+.dashboard-wrapper { display: flex; min-height: 100vh; }
 
-/* Sidebar Styling */
 .sidebar {
-  width: 240px;
+  width: 220px;
   background: var(--sidebar);
   color: white;
-  padding: 2rem;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
-.user-email {
-  font-size: 0.8rem;
-  opacity: 0.7;
-  margin-bottom: 2rem;
-}
-
-/* Main Layout */
-.main-content {
-  flex: 1;
-  padding: 3rem;
-}
+.main-content { flex: 1; padding: 40px; }
 
 .widget {
-  max-width: 800px;
-  margin: 0 auto;
-  background: var(--white);
-  padding: 2rem;
+  background: white;
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-/* Input Area */
-.todo-input-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 2rem;
-}
+.todo-input-group { display: flex; gap: 10px; margin-bottom: 30px; }
 
-.todo-input-group input {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-.todo-input-group select {
+.todo-input-group input, .todo-input-group select {
   padding: 10px;
-  border-radius: 8px;
   border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
-/* Task Items */
+/* THE COLOR LOGIC */
+.badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin-right: 15px;
+  text-transform: uppercase;
+}
+
+.badge-urgent { background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+.badge-work { background: #dbeafe; color: #1e40af; border: 1px solid #60a5fa; }
+.badge-personal { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
 .todo-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid #edf2f7;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
 }
 
-.task-info {
-  display: flex;
-  align-items: center;
-}
-
-/* Color-Coded Badges */
-.badge {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-right: 15px;
-  letter-spacing: 0.5px;
-}
-
-.badge-urgent { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-.badge-work { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
-.badge-personal { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
-
-/* Buttons */
-.primary-btn {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.delete-btn {
-  background: none;
-  border: none;
-  color: #ccc;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.delete-btn:hover { color: #ef4444; }
-
-.logout-btn {
-  margin-top: auto;
-  background: rgba(255,255,255,0.1);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
+.primary-btn { background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; }
+.delete-btn { background: #ef4444; color: white; border: none; border-radius: 4px; width: 25px; height: 25px; cursor: pointer; }
