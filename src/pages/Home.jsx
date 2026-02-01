@@ -41,20 +41,26 @@ function Home() {
 
   // 2. ADD A TASK
   const addTask = async (e) => {
-    if (e) e.preventDefault() // Prevents page refresh if used in a form
-    if (newTask.trim() !== "") {
-      try {
-        await addDoc(collection(db, "tasks"), {
-          text: newTask,
-          completed: false,
-          createdAt: serverTimestamp() // Adds a cloud timestamp
-        })
-        setNewTask("") // Clear the input box
-      } catch (error) {
-        console.error("Error adding task: ", error)
-      }
+  if (e) e.preventDefault();
+  if (newTask.trim() !== "") {
+    try {
+      // Get the current logged-in user's ID
+      const userId = auth.currentUser ? auth.currentUser.uid : "anonymous";
+
+      await addDoc(collection(db, "tasks"), {
+        text: newTask,
+        completed: false,
+        userId: userId, // This is the 'ID badge' the database wants
+        createdAt: serverTimestamp()
+      });
+      setNewTask("");
+    } catch (error) {
+      console.error("Firebase Error:", error);
+      alert("Check your Firebase Rules! Error: " + error.message);
     }
   }
+};
+
 
   // 3. DELETE A TASK
   const deleteTask = async (id) => {
