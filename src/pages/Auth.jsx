@@ -1,4 +1,3 @@
-import { auth } from '../db/firebase';
 import { useState } from 'react';
 import { auth } from '../db/firebase';
 import { 
@@ -19,12 +18,16 @@ function Auth() {
     setError('');
     try {
       if (isLogin) {
+        // Log in existing user
         await signInWithEmailAndPassword(auth, email, password);
       } else {
+        // Register new user
         await createUserWithEmailAndPassword(auth, email, password);
       }
-      navigate('/home'); // Send them to the dashboard after success
+      // If successful, go to the tasks page
+      navigate('/home'); 
     } catch (err) {
+      // Show user-friendly error messages
       setError(err.message);
     }
   };
@@ -32,30 +35,44 @@ function Auth() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1>{isLogin ? 'Welcome Back' : 'Create Account'}</h1>
-        {error && <p className="error-msg">{error}</p>}
+        <h1>{isLogin ? 'Welcome Back' : 'Join the Cloud'}</h1>
+        <p className="subtitle">{isLogin ? 'Login to manage your tasks' : 'Create an account to get started'}</p>
+        
+        {error && <div className="error-banner">{error}</div>}
+        
         <form onSubmit={handleAuth}>
-          <input 
-            type="email" 
-            placeholder="Email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-          />
-          <input 
-            type="password" 
-            placeholder="Password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
+          <div className="input-group">
+            <label>Email Address</label>
+            <input 
+              type="email" 
+              placeholder="name@company.com" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+            />
+          </div>
+          
+          <div className="input-group">
+            <label>Password</label>
+            <input 
+              type="password" 
+              placeholder="••••••••" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+            />
+          </div>
+          
           <button type="submit" className="primary-btn">
-            {isLogin ? 'Login' : 'Sign Up'}
+            {isLogin ? 'Sign In' : 'Create Account'}
           </button>
         </form>
-        <p onClick={() => setIsLogin(!isLogin)} className="toggle-auth">
-          {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
-        </p>
+        
+        <div className="auth-footer">
+          <p onClick={() => setIsLogin(!isLogin)} className="toggle-link">
+            {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Log In"}
+          </p>
+        </div>
       </div>
     </div>
   );
