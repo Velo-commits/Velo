@@ -1,7 +1,7 @@
+import { db } from '../db/firebase' 
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 // Import our database connection and Firebase functions
-import { db } from '../db/firebase' 
 import { collection, addDoc, onSnapshot, query, deleteDoc, doc } from 'firebase/firestore'
 
 function Home() {
