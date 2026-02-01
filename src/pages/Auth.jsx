@@ -14,23 +14,21 @@ function Auth() {
   const navigate = useNavigate();
 
   const handleAuth = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      if (isLogin) {
-        // Log in existing user
-        await signInWithEmailAndPassword(auth, email, password);
-      } else {
-        // Register new user
-        await createUserWithEmailAndPassword(auth, email, password);
-      }
-      // If successful, go to the tasks page
-      navigate('/home'); 
-    } catch (err) {
-      // Show user-friendly error messages
-      setError(err.message);
+  e.preventDefault();
+  setError('');
+  try {
+    if (isLogin) {
+      await signInWithEmailAndPassword(auth, email, password);
+    } else {
+      await createUserWithEmailAndPassword(auth, email, password);
     }
-  };
+    navigate('/home'); 
+  } catch (err) {
+    // This will help us see exactly what Firebase is complaining about
+    console.error("Firebase Auth Error Code:", err.code);
+    setError(err.message); 
+  }
+};
 
   return (
     <div className="auth-container">
