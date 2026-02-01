@@ -1,94 +1,138 @@
-import { db } from '../db/firebase' 
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-// Import our database connection and Firebase functions
-import { collection, addDoc, onSnapshot, query, deleteDoc, doc } from 'firebase/firestore'
+// Import the database connection we set up in firebase.js
+import { db } from '../db/firebase' 
+// Import Firebase tools for Auth and Firestore
+import { getAuth, signOut } from 'firebase/auth'
+import { 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  query, 
+  deleteDoc, 
+  doc, 
+  serverTimestamp 
+} from 'firebase/firestore'
 
 function Home() {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('dashboard')
+  const auth = getAuth()
   
-  // --- STATE FOR TASKS ---
+  // --- STATE ---
   const [tasks, setTasks] = useState([])
   const [newTask, setNewTask] = useState("")
 
-  // LOAD DATA FROM FIREBASE (Real-time)
+  // 1. LISTEN TO FIREBASE (Real-time sync from Mumbai)
   useEffect(() => {
+    // This tells Firebase: "Watch the 'tasks' collection for any changes"
     const q = query(collection(db, "tasks"))
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let tasksArray = []
       querySnapshot.forEach((doc) => {
+        // We include the doc.id so we know which one to delete later
         tasksArray.push({ ...doc.data(), id: doc.id })
       })
       setTasks(tasksArray)
     })
+
+    // Clean up the listener when the page closes
     return () => unsubscribe()
   }, [])
 
-  // ADD TASK TO FIREBASE
-  const addTask = async () => {
+  // 2. ADD A TASK
+  const addTask = async (e) => {
+    if (e) e.preventDefault() // Prevents page refresh if used in a form
     if (newTask.trim() !== "") {
-      await addDoc(collection(db, "tasks"), {
-        text: newTask,
-        completed: false
-      })
-      setNewTask("")
+      try {
+        await addDoc(collection(db, "tasks"), {
+          text: newTask,
+          completed: false,
+          createdAt: serverTimestamp() // Adds a cloud timestamp
+        })
+        setNewTask("") // Clear the input box
+      } catch (error) {
+        console.error("Error adding task: ", error)
+      }
     }
   }
 
-  // DELETE TASK FROM FIREBASE
+  // 3. DELETE A TASK
   const deleteTask = async (id) => {
-    await deleteDoc(doc(db, "tasks", id))
+    try {
+      await deleteDoc(doc(db, "tasks", id))
+    } catch (error) {
+      console.error("Error deleting task: ", error)
+    }
   }
 
-  // RENDER LOGIC
-  const renderContent = () => {
-    if (activeTab === 'dashboard') {
-      return (
+  // 4. LOGOUT LOGIC
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      navigate('/') // Send user back to Login page
+    })
+  }
+
+  // 5. THE VIEW (JSX)
+  return (
+    <div className="dashboard-container">
+      {/* Sidebar Section */}
+      <div className="sidebar">
+        <div className="logo-section">
+          <h2>CLOUD APP ☁️</h2>
+          <p>Logged in as: {auth.currentUser?.email}</p>
+        </div>
+        <nav className="menu">
+          <div className="menu-item active">Dashboard</div>
+          <div className="menu-item">Settings</div>
+        </nav>
+        <button className="logout-btn" onClick={handleLogout}>Sign Out</button>
+      </div>
+
+      {/* Main Content Section */}
+      <div className="main-content">
+        <header className="navbar">
+          <h1>My Tasks</h1>
+        </header>
+
         <div className="content-area">
           <div className="widget">
-            <h3>Cloud Tasks (Synced to Mumbai ☁️)</h3>
             <div className="todo-input-group">
               <input 
-                id="task-name"
-                name="task-name"
+                id="task-input"
+                name="task-input"
                 type="text" 
-                placeholder="New Cloud Task..." 
+                placeholder="What needs to be done?" 
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addTask()}
               />
-              <button className="primary" onClick={addTask}>Add</button>
+              <button className="primary-btn" onClick={addTask}>Add Task</button>
             </div>
-            <div>
-              {tasks.map((task) => (
-                <div key={task.id} className="todo-item">
-                  <span>{task.text}</span>
-                  <button className="delete-btn" onClick={() => deleteTask(task.id)}>X</button>
-                </div>
-              ))}
+
+            <div className="todo-list">
+              {tasks.length === 0 ? (
+                <p className="empty-msg">No tasks yet. Add one above!</p>
+              ) : (
+                tasks.map((task) => (
+                  <div key={task.id} className="todo-item">
+                    <span>{task.text}</span>
+                    <button 
+                      className="delete-btn" 
+                      onClick={() => deleteTask(task.id)}
+                      title="Delete Task"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
-      )
-    }
-    return <div className="content-area"><div className="widget"><h3>{activeTab} Page</h3><p>Content coming soon!</p></div></div>
-  }
-
-  return (
-    <div className="dashboard-container">
-      <div className="sidebar">
-        <h2>CLOUD APP ☁️</h2>
-        <div className={`menu-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</div>
-        <div className={`menu-item ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}>Users</div>
-        <div style={{ marginTop: 'auto' }} className="menu-item" onClick={() => navigate('/')}>Log Out</div>
-      </div>
-      <div className="main-content">
-        <div className="navbar"><h3>{activeTab}</h3><button className="primary">Profile</button></div>
-        {renderContent()}
       </div>
     </div>
   )
 }
 
-export default Home; // This is the "VIP Pass" Netlify was looking for!
+// THE EXPORT (Always at the very bottom!)
+export default Home;
