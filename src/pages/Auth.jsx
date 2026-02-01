@@ -15,26 +15,20 @@ function Auth() {
 
   const handleAuth = async (e) => {
     e.preventDefault();
-    setError(''); // Clear previous errors
+    setError('');
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
       }
-      navigate('/home'); // Success! Go to dashboard
+      navigate('/home'); 
     } catch (err) {
       console.error("Auth Error:", err.code);
-      // Simplify error messages for the user
-      if (err.code === 'auth/invalid-credential') {
-        setError("Incorrect email or password.");
-      } else if (err.code === 'auth/email-already-in-use') {
-        setError("This email is already taken. Try logging in.");
-      } else if (err.code === 'auth/weak-password') {
-        setError("Password should be at least 6 characters.");
-      } else {
-        setError(err.message);
-      }
+      if (err.code === 'auth/invalid-credential') setError("Incorrect email or password.");
+      else if (err.code === 'auth/email-already-in-use') setError("Email already exists. Try logging in.");
+      else if (err.code === 'auth/weak-password') setError("Password must be at least 6 characters.");
+      else setError(err.message);
     }
   };
 
@@ -43,7 +37,7 @@ function Auth() {
       <div className="auth-card">
         <h1>{isLogin ? 'Welcome Back' : 'Get Started'}</h1>
         <p className="subtitle">
-          {isLogin ? 'Login to manage your tasks' : 'Create an account in seconds'}
+          {isLogin ? 'Login to manage your tasks' : 'Create an account to join CloudTask'}
         </p>
         
         {error && <div className="error-banner">{error}</div>}
@@ -71,13 +65,13 @@ function Auth() {
             />
           </div>
           
-          <button type="submit" className="primary-btn" style={{width: '100%'}}>
+          <button type="submit" className="primary-btn" style={{width: '100%', marginTop: '10px'}}>
             {isLogin ? 'Sign In' : 'Create Account'}
           </button>
         </form>
         
         <p onClick={() => setIsLogin(!isLogin)} className="toggle-link">
-          {isLogin ? "Need an account? Sign Up" : "Have an account? Login"}
+          {isLogin ? "New here? Create an account" : "Already have an account? Login"}
         </p>
       </div>
     </div>

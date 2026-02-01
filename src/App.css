@@ -1,28 +1,29 @@
-/* GLOBAL RESETS */
+/* GLOBAL RESET */
 :root {
-  --primary: #4f46e5; /* Indigo */
-  --bg: #f3f4f6;      /* Light Gray */
-  --sidebar: #1e293b; /* Dark Slate */
-  --text: #334155;
+  --primary: #4f46e5;       /* Indigo */
+  --bg-color: #f3f4f6;      /* Light Gray */
+  --sidebar-bg: #1e293b;    /* Dark Slate */
+  --text-color: #334155;
   --white: #ffffff;
 }
 
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 /* ===========================
-   AUTH / LOGIN PAGE STYLES 
+   LOGIN / SIGNUP PAGE STYLES 
    =========================== */
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 100vw;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* The Purple Gradient */
 }
 
 .auth-card {
@@ -35,13 +36,14 @@ body {
   text-align: center;
 }
 
-.auth-card h1 { margin-bottom: 0.5rem; color: #1e293b; }
-.subtitle { margin-bottom: 2rem; color: #64748b; font-size: 0.9rem; }
+.auth-card h1 { margin-top: 0; color: #1e293b; }
+.subtitle { color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem; }
 
 .input-group { text-align: left; margin-bottom: 1rem; }
 .input-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+
 .input-group input {
-  width: 93%; /* Fixes padding overflow */
+  width: 92%; /* Fits inside the padding */
   padding: 12px;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -72,19 +74,19 @@ body {
 
 /* Sidebar */
 .sidebar {
-  width: 250px;
-  background: var(--sidebar);
+  width: 260px;
+  background: var(--sidebar-bg);
   color: white;
   padding: 2rem;
   display: flex;
   flex-direction: column;
 }
 
-.logo { margin-top: 0; margin-bottom: 2rem; font-size: 1.5rem; letter-spacing: 1px; }
-.user-info p { opacity: 0.7; font-size: 0.85rem; margin-bottom: 2rem; }
+.logo { margin-top: 0; font-size: 1.5rem; letter-spacing: 1px; color: #fff; }
+.user-info { margin-bottom: 2rem; opacity: 0.8; font-size: 0.9rem; }
 
 /* Main Area */
-.main-content { flex: 1; padding: 3rem; overflow-y: auto; }
+.main-content { flex: 1; padding: 3rem; }
 
 .widget {
   max-width: 800px;
@@ -95,9 +97,8 @@ body {
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-/* Task Input Form */
-.todo-input-group { display: flex; gap: 10px; margin-bottom: 2.5rem; }
-
+/* Task Input Area */
+.todo-input-group { display: flex; gap: 10px; margin-bottom: 2rem; }
 .todo-input-group input { flex: 2; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; }
 .todo-input-group select { padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; background: white; }
 
@@ -110,7 +111,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.2s;
+  font-size: 1rem;
 }
 .primary-btn:hover { background: #4338ca; }
 
@@ -121,33 +122,29 @@ body {
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
-  margin-top: auto; /* Pushes to bottom */
+  margin-top: auto; 
 }
 
-/* Task List Items */
+/* Task List & Badges */
 .todo-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   border-bottom: 1px solid #f1f5f9;
-  transition: transform 0.1s;
 }
-.todo-item:hover { background-color: #f8fafc; }
 
-/* === VITAL: BADGE COLORS === */
 .badge {
   display: inline-block;
   padding: 4px 10px;
   border-radius: 6px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
   margin-right: 12px;
 }
 
-/* Ensure these names match JSX logic exactly */
+/* BADGE COLORS - These match the classes in Home.jsx */
 .badge-urgent { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
 .badge-work   { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
 .badge-personal { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
@@ -160,7 +157,4 @@ body {
   height: 28px;
   border-radius: 4px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
