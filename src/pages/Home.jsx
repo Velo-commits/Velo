@@ -40,24 +40,18 @@ function Home() {
   }, [])
 
   // 2. ADD A TASK
-  const addTask = async (e) => {
+  const [category, setCategory] = useState("Personal"); // New state
+
+const addTask = async (e) => {
   if (e) e.preventDefault();
   if (newTask.trim() !== "") {
-    try {
-      // Get the current logged-in user's ID
-      const userId = auth.currentUser ? auth.currentUser.uid : "anonymous";
-
-      await addDoc(collection(db, "tasks"), {
-        text: newTask,
-        completed: false,
-        userId: userId, // This is the 'ID badge' the database wants
-        createdAt: serverTimestamp()
-      });
-      setNewTask("");
-    } catch (error) {
-      console.error("Firebase Error:", error);
-      alert("Check your Firebase Rules! Error: " + error.message);
-    }
+    await addDoc(collection(db, "tasks"), {
+      text: newTask,
+      category: category, // Saving the category
+      userId: auth.currentUser.uid,
+      createdAt: serverTimestamp()
+    });
+    setNewTask("");
   }
 };
 
@@ -103,16 +97,17 @@ function Home() {
         <div className="content-area">
           <div className="widget">
             <div className="todo-input-group">
-              <input 
-                id="task-input"
-                name="task-input"
-                type="text" 
-                placeholder="What needs to be done?" 
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && addTask()}
-              />
-              <button className="primary-btn" onClick={addTask}>Add Task</button>
+             <input 
+                value={newTask} 
+                onChange={(e) => setNewTask(e.target.value)} 
+                placeholder="New task..." 
+            />
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="Personal">Personal</option>
+            <option value="Work">Work</option>
+            <option value="Urgent">Urgent</option>
+            </select>
+            <button onClick={addTask}>Add</button>
             </div>
 
             <div className="todo-list">
