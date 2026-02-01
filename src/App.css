@@ -4,6 +4,32 @@
   --card: #ffffff;
   --text: #1e293b;
 }
+.todo-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.todo-input-group select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.todo-item {
+  background: white;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.todo-item strong {
+  color: #6366f1; /* Modern Purple */
+  margin-right: 10px;
+}
 
 body {
   background-color: var(--bg);
