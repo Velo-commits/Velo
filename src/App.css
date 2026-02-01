@@ -15,6 +15,33 @@
   border-radius: 5px;
   border: 1px solid #ddd;
 }
+/* Styling for the category labels */
+.todo-item span strong {
+  display: inline-block;
+  min-width: 80px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 12px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Color coding based on the text inside the brackets */
+.todo-item span strong:contains("Urgent") {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.todo-item span strong:contains("Work") {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.todo-item span strong:contains("Personal") {
+  background-color: #f5f5f5;
+  color: #616161;
+}
 
 .todo-item {
   background: white;
